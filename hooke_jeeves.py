@@ -1,64 +1,63 @@
 import numpy as np
 
-    # - func: funkcja do minimalizacji
-    # - x0: początkowy punkt startowy (numpy array)
-    # - step_size: początkowy rozmiar kroku (default: 0.5)
-    # - alpha: współczynnik przyspieszenia (default: 2)
-    # - beta: współczynnik redukcji kroku (default: 0.5)
-    # - tolerance: tolerancja dla kryterium stopu (default: 1e-5)
-    # - max_iter: maksymalna liczba iteracji (default: 1000)
+# - function: The function to be minimized.
+# - x0: The initial point for the optimization.
+# - delta: The initial step size for the search. Default is 1e-2.
+# - beta: The reduction factor for the step size. Default is 0.5.
+# - epsilon: The tolerance for stopping the optimization. Default is 1e-8.
 
+def minimize(function, x0, delta=1e-2, beta=0.5, epsilon=1e-8):
+    xb = np.copy(x0)
+    f0 = function(xb)
 
-def hooke_jeeves(func, x0, step_size=0.5, alpha=2, beta=0.5, tolerance=1e-5, max_iter=1000):   
     iter = 0
-    def exploratory_search(x, step_size):
-        x_new = x.copy()
-        for i in range(len(x)):
-            x_temp = x_new.copy()
-            x_temp[i] += step_size
-            if func(x_temp) < func(x_new):
-                x_new = x_temp
-            else:
-                x_temp[i] -= 2 * step_size
-                if func(x_temp) < func(x_new):
-                    x_new = x_temp
-        return x_new
+    while True:
+        for i in range(len(x0)):
+            z = np.copy(x0)
+            z[i] += delta 
 
-    x_best = np.array(x0)
-    f_best = func(x_best)
-    for iteration in range(max_iter):
-        x_new = exploratory_search(x_best, step_size)
-        if np.all(x_new == x_best):
-            step_size *= beta
-            if step_size < tolerance:
-                break
+            f = function(z)
+
+            if f < f0:  
+                f0 = f
+                xb = np.copy(z)
+            else:
+                z = np.copy(x0)
+                z[i] -= 2 * delta
+                f = function(z)
+
+                if f < f0: 
+                    f0 = f
+                    xb = np.copy(z)
+
+        if function(xb) < function(x0):
+            x0 = np.copy(xb)
         else:
-            while True:
-                x_temp = x_new + alpha * (x_new - x_best)
-                x_best = x_new
-                x_new = exploratory_search(x_temp, step_size)
-                iter += 1
-                if func(x_new) >= func(x_best):
-                    break
-        f_best = func(x_best)
-    
-    print(f"Liczba iteracji: {iter}")
-    return x_best, f_best
+            if delta < epsilon:
+                print(f"Points: {x0}")
+                print(f"Value: {f0:.15f}")
+                print(f"Iterations: {iter}")
+                break
+            else:
+                delta *= beta
+
+        for i in range(len(x0)):
+            x0[i] = 2 * xb[i] - x0[i]
+        iter += 1
 
 n = 8
 
-def rosenbrock2w(x):
+def f2d(x):
     return (2 - x[0])**2 + (n + 2) * (x[1] - x[0]**2)**2
 
-def rosenbrock3w(x):
+def f3d(x):
     return (1 - x[0])**2 + n * (x[1] - x[0]**2)**2 + (1 - x[1])**2 + n * (x[2] - x[1]**2)**2
 
-x0w2 = np.array([20, 20])
-resultw2, valuew2 = hooke_jeeves(rosenbrock2w, x0w2)
-print(f"Znaleziony punkt minimalny dla rosebrocka 2 wymiaru: {resultw2}")
-print(f"Wartość funkcji w punkcie minimalnym dla rosebrocka 2 wymiaru: {valuew2:.20f}")
-
-x0w3 = np.array([1.0, 2.0, 3.0])
-resultw3, valuew3 = hooke_jeeves(rosenbrock3w, x0w3)
-print(f"Znaleziony punkt minimalny dla rosebrocka 3 wymiaru: {resultw3}")
-print(f"Wartość funkcji w punkcie minimalnym dla rosebrocka 3 wymiaru: {valuew3:.20f}")
+print("--------------------")
+print("Funkcja rossenbrocka 2D")
+x0 = np.array([1.0, 2.0])
+minimize(f2d, x0)
+print("--------------------")
+print("Funkcja rossenbrocka 3D")
+x0 = np.array([1.0, 2.0, 20.0])
+minimize(f3d, x0)
