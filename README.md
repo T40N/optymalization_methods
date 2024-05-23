@@ -1,4 +1,4 @@
-### Optymalisation Methods
+# Optymalisation Methods
 
 This is repository of optymalisation methods for searching of local minima and zero of a function. All of this method were done for Optymalisation classes at University of Lodz.
 
@@ -10,3 +10,5 @@ This is repository of optymalisation methods for searching of local minima and z
 4. Nelder Mead
 5. Hooke Jeeves
 6. Gradient Descent
+
+#### Created by: Bartosz Ratajczyk
