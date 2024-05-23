@@ -6,7 +6,7 @@ import numpy as np
 # - beta: The reduction factor for the step size. Default is 0.5.
 # - epsilon: The tolerance for stopping the optimization. Default is 1e-8.
 
-def minimize(function, x0, delta=1e-2, beta=0.5, epsilon=1e-8):
+def hooka_jeevesa(function, x0, delta=1e-2, beta=0.5, epsilon=1e-8):
     xb = np.copy(x0)
     f0 = function(xb)
 
@@ -56,8 +56,9 @@ def f3d(x):
 print("--------------------")
 print("Funkcja rossenbrocka 2D")
 x0 = np.array([1.0, 2.0])
-minimize(f2d, x0)
+hooka_jeevesa(f2d, x0)
 print("--------------------")
 print("Funkcja rossenbrocka 3D")
 x0 = np.array([1.0, 2.0, 20.0])
-minimize(f3d, x0)
+hooka_jeevesa(f3d, x0)
+ 

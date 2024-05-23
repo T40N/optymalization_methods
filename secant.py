@@ -1,13 +1,11 @@
 def secant(x0, x1, f, epsilon, max_iterations):
-    iter = 0
     for i in range(max_iterations):
         x2 = (f(x1) * x0 - f(x0) * x1) / (f(x1) - f(x0))
         y2 = f(x2)
 
-        iter += 1
 
         if abs(x2 - x1) <= epsilon:
-            print(f"Liczba iteracji: {iter}")
+            print(f"Liczba iteracji: {i}")
             print(f"Miejsce zerowe: {x2}")
             return x2
 

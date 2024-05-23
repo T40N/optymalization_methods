@@ -1,9 +1,7 @@
 def newton(x0, f, df, epsilon, max_iterations):
-    iter = 0
     for i in range(max_iterations):
         y = f(x0)
         dfx = df(x0)
-        iter += 1
 
         if abs(dfx) < 0:
             print("Nie znaleziono");
@@ -13,7 +11,7 @@ def newton(x0, f, df, epsilon, max_iterations):
         x1 = x0 - (y / dfx)
 
         if abs(x1 - x0) <= epsilon:
-            print(f"Liczba iteracji: {iter}")
+            print(f"Liczba iteracji: {i}")
             print(f"Miejsce zerowe: {x1}")
             return x1
 
