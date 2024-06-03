@@ -10,5 +10,6 @@ This is repository of optymalisation methods for searching of local minima and z
 4. Nelder Mead
 5. Hooke Jeeves
 6. Gradient Descent
+7. Knapsack problem - dynamic and greedy methods.
 
 #### Created by: Bartosz Ratajczyk
